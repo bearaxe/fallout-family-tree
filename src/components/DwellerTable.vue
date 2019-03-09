@@ -1,10 +1,10 @@
 <template>
-  <Special v-bind:dwellers="formattedData"></Special>
+  <Special :dwellers="formattedData"></Special>
 </template>
 
 <script>
 let header = {
-  name: 'Name',
+  firstName: 'Name',
   special: 'SPECIAL'
 };
 

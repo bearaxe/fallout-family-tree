@@ -8,7 +8,8 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
+      alias: '/',
+      path: '/home',
       name: 'home',
       component: Home
     },

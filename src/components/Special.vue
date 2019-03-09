@@ -1,7 +1,7 @@
 <template>
   <div class="list-wrapper">
     <div class="row" v-for="dweller in dwellers">
-      <div class="name"><span v-text="dweller.name"></span></div>
+      <div class="name">{{ dweller.firstName }} {{ dweller.lastName}}</div>
       <div class="strength">
         <span v-text="dweller.special[0]"></span>
       </div>

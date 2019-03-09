@@ -12,13 +12,5 @@ export default {
   components: {
     DwellerTable
   },
-  data: function () {
-    return{
-      testDwellers: [
-        {name: "Test Boy",
-        special: '1234567'}
-      ]
-    }
-  }
 }
 </script>
