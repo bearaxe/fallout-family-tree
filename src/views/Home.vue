@@ -1,10 +1,11 @@
 <template>
   <div class="home">
-    <DwellerTable />
+    <DwellerTable :dwellers="dwellers" />
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import DwellerTable from '@/components/DwellerTable.vue'
 
 export default {
@@ -12,5 +13,8 @@ export default {
   components: {
     DwellerTable
   },
+  computed: {
+    ...mapState(['dwellers'])
+  }
 }
 </script>

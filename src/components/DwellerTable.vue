@@ -8,7 +8,6 @@ const header = {
   special: 'SPECIAL'
 };
 
-import { mapState } from 'vuex'
 import Special from '@/components/Special.vue'
 
 export default {
@@ -16,11 +15,15 @@ export default {
   components: {
     Special
   },
+  props: {
+    dwellers: {
+      type: Array
+    }
+  },
   computed: {
     formattedData: function () {
       return [header, ...this.dwellers];
     },
-    ...mapState(['dwellers'])
   }
 }
 </script>

@@ -1,3 +1,4 @@
+// TODO: make an express server for this
 export default [
   { firstName: 'Boy',
     lastName: 'Test',
