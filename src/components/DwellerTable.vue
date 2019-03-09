@@ -2,6 +2,7 @@
   <div class="list-wrapper">
     <Special class="dweller-table"
       :enable-name-link="false"
+      :isHeader="true"
       :dweller="header"
     />
     <template v-for="dweller in dwellers">
@@ -14,11 +15,6 @@
 </template>
 
 <script>
-const header = {
-  firstName: 'Name',
-  special: 'SPECIAL'
-};
-
 import Special from '@/components/Special.vue'
 
 export default {
@@ -33,11 +29,14 @@ export default {
     enableNameLink: {
       type: Boolean,
       default: true
-    }
-  },
-  data() {
-    return {
-      header
+    },
+    header: {
+      type: Object,
+      default: function (owo) {
+        return {
+          label: 'Name',
+        }
+      }
     }
   },
 }

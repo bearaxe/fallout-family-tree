@@ -1,32 +1,36 @@
 <template>
     <div class="row">
-      <div
+      <div class="label" v-if="isHeader">
+        {{ dweller.label }}
+      </div>
+      <div v-else
         class="name"
         :class="{'enabled': enableNameLink }"
         @click="openDwellerDetails(dweller.id)"
       >
         {{ dweller.firstName }} {{ dweller.lastName}}
       </div>
+
       <div class="strength">
-        <span v-text="dweller.special[0]"></span>
+        <span v-text="specialValue('S')"></span>
       </div>
       <div class="perception">
-        <span v-text="dweller.special[1]"></span>
+        <span v-text="specialValue('P')"></span>
       </div>
       <div class="endurance">
-        <span v-text="dweller.special[2]"></span>
+        <span v-text="specialValue('E')"></span>
       </div>
       <div class="charisma">
-        <span v-text="dweller.special[3]"></span>
+        <span v-text="specialValue('C')"></span>
       </div>
       <div class="intelligence">
-        <span v-text="dweller.special[4]"></span>
+        <span v-text="specialValue('I')"></span>
       </div>
       <div class="agility">
-        <span v-text="dweller.special[5]"></span>
+        <span v-text="specialValue('A')"></span>
       </div>
       <div class="luck">
-        <span v-text="dweller.special[6]"></span>
+        <span v-text="specialValue('L')">YOWHATEFUCK</span>
       </div>
     </div>
 </template>
@@ -37,26 +41,32 @@ export default {
   name: 'Special',
   props: {
     dweller: { type: Object },
-    enableNameLink: { type: Boolean, default: true }
+    enableNameLink: { type: Boolean, default: true },
+    isHeader: { type: Boolean, default: false },
   },
   methods: {
     openDwellerDetails(dwellerId) {
       if (dwellerId) {
         this.$router.push({ path: `/dweller-details/${dwellerId}`});
       }
+    },
+    specialValue(letter) {
+      const statIndex = 'SPECIAL'.indexOf(letter);
+      if (this.isHeader) {
+        return letter;
+      }
+      else if (this.dweller) {
+        const stat = this.dweller.special[statIndex];
+        return stat? stat : '-'; // missing stat
+      }
+
+      return '--'; // invalid data
     }
   }
 }
 </script>
 
 <style lang="scss">
-.name.enabled {
-  color: blue;
-  cursor: pointer;
-  text-decoration: underline;
-
-
-}
 .row {
   display: flex;
   align-items: baseline;
@@ -71,10 +81,16 @@ export default {
     padding: .25rem;
     padding-bottom: 0;
   }
-  .name {
+  .name,
+  .label {
     border-left: none;
     text-align: left;
     flex-basis: 51%;
+    &.enabled {
+      color: blue;
+      cursor: pointer;
+      text-decoration: underline;
+    }
   }
   &:first-child {
     border-top: 1px solid black;

@@ -1,7 +1,6 @@
 <template>
   <div class="dweller-detail">
     <!--
-      TODO: turn off links on dweller table
       TODO: turn off table headers sometimes
       TODO: Pass through labels for parent1/parent2? conflict with above
       TODO: combine parents into 1 table?
