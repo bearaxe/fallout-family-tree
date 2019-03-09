@@ -34,34 +34,26 @@
 <script>
 import DwellerTable from '@/components/DwellerTable.vue';
 
-const badId = {firstName: 'Dweller Does Not Exist', lastName: ''};
-
 export default {
   components: {
     DwellerTable
   },
   methods: {
-    findDweller(idKey) {
-      let noResult = {};
-      if (this.dweller) {
-        return this.$store.state.dwellers
-          .find(entry => entry.id == this.dweller[idKey])
-          || noResult;
-      }
-      return noResult;
+    findDwellerById(id) {
+      return this.$store.state.dwellers
+        .find(entry => entry.id == id)
+        || {};
     }
   },
   computed: {
     dweller() {
-      return this.$store.state.dwellers
-        .find(entry => entry.id == this.$route.params.dwellerId)
-        || badId
+      return this.findDwellerById(this.$route.params.dwellerId);
     },
     parent1() {
-      return this.findDweller('parent1');
+      return this.dweller? this.findDwellerById(this.dweller.parent1): {};
     },
     parent2() {
-      return this.findDweller('parent2');
+      return this.dweller? this.findDwellerById(this.dweller.parent2): {};
     }
   }
 }
