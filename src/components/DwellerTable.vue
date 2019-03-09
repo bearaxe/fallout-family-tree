@@ -3,7 +3,7 @@
 </template>
 
 <script>
-let header = {
+const header = {
   firstName: 'Name',
   special: 'SPECIAL'
 };

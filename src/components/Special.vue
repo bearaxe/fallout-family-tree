@@ -1,7 +1,9 @@
 <template>
   <div class="list-wrapper">
     <div class="row" v-for="dweller in dwellers">
-      <div class="name">{{ dweller.firstName }} {{ dweller.lastName}}</div>
+      <div class="name" @click="openDwellerDetails(dweller.id)">
+        {{ dweller.firstName }} {{ dweller.lastName}}
+      </div>
       <div class="strength">
         <span v-text="dweller.special[0]"></span>
       </div>
@@ -33,12 +35,32 @@ export default {
   name: 'Special',
   props: {
     dwellers: Array
+  },
+  methods: {
+    openDwellerDetails(dwellerId) {
+      if (dwellerId) {
+        this.$router.push({ path: `/dweller-details/${dwellerId}`});
+      }
+    }
   }
 }
 </script>
 
 <style lang="scss">
+.name {
+  color: blue;
+  cursor: pointer;
+  text-decoration: underline;
+
+
+}
 .row {
+  &:first-child .name{
+    color: black;
+    cursor: initial;
+    text-decoration: none;
+  }
+
   display: flex;
   align-items: baseline;
   width: 100%;

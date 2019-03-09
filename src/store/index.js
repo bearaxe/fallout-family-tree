@@ -1,14 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import testDwellers from './testDwellers.js';
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
     dwellers: [
-      { firstName: 'Test',
-        lastName: 'Boy',
-        special: '1234567'},
+      ...testDwellers
     ]
   },
   mutations: {
@@ -17,5 +16,5 @@ export default new Vuex.Store({
   },
   actions: {
 
-  }
+  },
 })
