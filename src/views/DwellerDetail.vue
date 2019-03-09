@@ -1,6 +1,5 @@
 <template>
   <div class="dweller-detail">
-    <div v-text="dweller" />
     <!--
       TODO: turn off links on dweller table
       TODO: turn off table headers sometimes
@@ -28,6 +27,11 @@
       </div>
 
     </div>
+    <div v-else>
+      <h2>Sorry, there's no entry for that dweller id.</h2>
+      <button @click='$router.push("/home")'>Click here to go home</button>
+    </div>
+
   </div>
 </template>
 
