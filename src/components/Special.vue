@@ -30,7 +30,7 @@
         <span v-text="specialValue('A')"></span>
       </div>
       <div class="luck">
-        <span v-text="specialValue('L')">YOWHATEFUCK</span>
+        <span v-text="specialValue('L')"></span>
       </div>
     </div>
 </template>
