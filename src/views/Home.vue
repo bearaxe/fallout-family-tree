@@ -1,11 +1,10 @@
 <template>
   <div class="home">
-    <DwellerTable v-bind:dwellers="testDwellers"></DwellerTable>
+    <DwellerTable />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
 import DwellerTable from '@/components/DwellerTable.vue'
 
 export default {

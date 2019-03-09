@@ -8,20 +8,19 @@ let header = {
   special: 'SPECIAL'
 };
 
+import { mapState } from 'vuex'
 import Special from '@/components/Special.vue'
 
 export default {
   name: 'DwellerTable',
-  props: {
-    dwellers: Array
-  },
   components: {
     Special
   },
   computed: {
     formattedData: function () {
       return [header, ...this.dwellers];
-    }
+    },
+    ...mapState(['dwellers'])
   }
 }
 </script>
