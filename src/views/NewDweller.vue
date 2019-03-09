@@ -10,34 +10,43 @@
 
       <!-- Vault Born Only -->
       <div class="parent-form" v-show="showParentForm">
-        <!--
-        TODO: make form-group a wrapper component
-        TODO: make parent 1 filter by matching last name,
-                default to all if no match -->
+        <!-- TODO: make form-group a wrapper component -->
         <div class="form-group">
           <label>Parent 1:</label>
-          <select v-model="dweller.parent1">
-            <option>Parents</option>
+          <select v-model="newDweller.parent1">
+            <template v-for="dweller in dwellers">
+              <option
+                v-show="dweller.id !== newDweller.parent2"
+                :value="dweller.id">
+                {{ dweller.firstName }} {{ dweller.lastName }}
+              </option>
+            </template>
           </select>
         </div>
 
         <div class="form-group">
           <label>Parent 2</label>
-          <select v-model="dweller.parent2">
-            <option>Parents</option>
+          <select v-model="newDweller.parent2">
+            <template v-for="dweller in dwellers">
+              <option
+                v-show="dweller.id !== newDweller.parent1"
+                :value="dweller.id">
+                {{ dweller.firstName }} {{ dweller.lastName }}
+              </option>
+            </template>
           </select>
         </div>
       </div>
       <!-- All Dwellers -->
       <div class="default-form">
         <label>First Name</label>
-        <input name="firstName" v-model="dweller.firstName" type="text">
+        <input name="firstName" v-model="newDweller.firstName" type="text">
 
         <label>Last Name</label>
-        <input name="lastName" v-model="dweller.lastName" type="text">
+        <input name="lastName" v-model="newDweller.lastName" type="text">
 
         <label>SPECIAL</label>
-        <input name="special" v-model="dweller.special" type="number">
+        <input name="special" v-model="newDweller.special" type="number">
       </div>
 
       <button type="submit">Add This Dweller!</button>
@@ -46,16 +55,21 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
+let fakeId = 10;
+
 export default {
   data() {
     return {
       showParentForm: true,
-      dweller: {
+      newDweller: {
         parent1: '',
         parent2: '',
         firstName: '',
         lastName: '',
         special: '',
+        id: fakeId,
       }
     }
   },
@@ -65,9 +79,13 @@ export default {
     },
     addDweller() {
       //TODO: integrate firebase via action
-      this.$store.commit('addDweller', this.dweller);
+      this.$store.commit('addDweller', this.newDweller);
+      fakeId++;
       this.$router.push('/home');
     }
+  },
+  computed: {
+    ...mapState(['dwellers'])
   }
 }
 </script>
