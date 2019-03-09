@@ -1,5 +1,5 @@
 <template>
-  <Special :dwellers="formattedData"></Special>
+  <Special class="dweller-table" :dwellers="formattedData"></Special>
 </template>
 
 <script>
@@ -24,3 +24,10 @@ export default {
   }
 }
 </script>
+
+<style>
+.dweller-table {
+  max-width: 90%;
+  margin: 0 auto;
+}
+</style>
