@@ -1,7 +1,10 @@
 <template>
-  <div class="list-wrapper">
-    <div class="row" v-for="dweller in dwellers">
-      <div class="name" @click="openDwellerDetails(dweller.id)">
+    <div class="row">
+      <div
+        class="name"
+        :class="{'enabled': enableNameLink }"
+        @click="openDwellerDetails(dweller.id)"
+      >
         {{ dweller.firstName }} {{ dweller.lastName}}
       </div>
       <div class="strength">
@@ -26,7 +29,6 @@
         <span v-text="dweller.special[6]"></span>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -34,7 +36,8 @@
 export default {
   name: 'Special',
   props: {
-    dwellers: Array
+    dweller: { type: Object },
+    enableNameLink: { type: Boolean, default: true }
   },
   methods: {
     openDwellerDetails(dwellerId) {
@@ -47,7 +50,7 @@ export default {
 </script>
 
 <style lang="scss">
-.name {
+.name.enabled {
   color: blue;
   cursor: pointer;
   text-decoration: underline;
@@ -55,17 +58,12 @@ export default {
 
 }
 .row {
-  &:first-child .name{
-    color: black;
-    cursor: initial;
-    text-decoration: none;
-  }
-
   display: flex;
   align-items: baseline;
   width: 100%;
   border: 1px solid black;
   border-bottom: none;
+
   > div {
     border-left: 1px solid black;
     flex-basis: 7%;
@@ -77,6 +75,9 @@ export default {
     border-left: none;
     text-align: left;
     flex-basis: 51%;
+  }
+  &:first-child {
+    border-top: 1px solid black;
   }
   &:last-child{
     border-bottom: 1px solid black;

@@ -1,5 +1,16 @@
 <template>
-  <Special class="dweller-table" :dwellers="formattedData"></Special>
+  <div class="list-wrapper">
+    <Special class="dweller-table"
+      :enable-name-link="false"
+      :dweller="header"
+    />
+    <template v-for="dweller in dwellers">
+      <Special class="dweller-table"
+        :enable-name-link="enableNameLink"
+        :dweller="dweller"
+      />
+    </template>
+  </div>
 </template>
 
 <script>
@@ -18,13 +29,17 @@ export default {
   props: {
     dwellers: {
       type: Array
+    },
+    enableNameLink: {
+      type: Boolean,
+      default: true
     }
   },
-  computed: {
-    formattedData: function () {
-      return [header, ...this.dwellers];
-    },
-  }
+  data() {
+    return {
+      header
+    }
+  },
 }
 </script>
 

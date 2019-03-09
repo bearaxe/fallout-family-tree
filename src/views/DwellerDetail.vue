@@ -8,7 +8,7 @@
     -->
     <div v-if="dweller.id">
       <h2>Dweller Profile: {{ dweller.firstName }} {{ dweller.lastName }}</h2>
-      <DwellerTable :dwellers="[dweller]" />
+      <DwellerTable :enable-name-link="false" :dwellers="[dweller]" />
 
       <div v-if="parent1.id">
         <h3>Parent1: {{ parent1.firstName }} {{ parent1.lastName }}</h3>
