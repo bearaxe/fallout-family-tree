@@ -8,7 +8,7 @@
     "unit": "vue-cli-service test:unit"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "firebase": "^5.1.0",
     "vue": "^2.5.16",
     "vue-router": "^3.0.1",
@@ -16,12 +16,12 @@
     "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.0.0-rc.3",
+    "@vue/cli-plugin-babel": "^3.11.0",
     "@vue/cli-plugin-unit-mocha": "^3.0.0-rc.3",
-    "@vue/cli-service": "^3.0.0-rc.3",
+    "@vue/cli-service": "^3.11.0",
     "@vue/test-utils": "^1.0.0-beta.16",
     "chai": "^4.1.2",
-    "node-sass": "^4.9.0",
+    "node-sass": "^7.0.1",
     "sass-loader": "^7.0.1",
     "vue-template-compiler": "^2.5.16"
   },

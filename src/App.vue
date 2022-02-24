@@ -12,14 +12,9 @@
 <script>
 ///TODO: keep going off this link
 ///https://stackoverflow.com/questions/44352042/vuejs-vuex-firebase-where-to-hook-up-firebase
-import * as firebase from 'firebase';
 
 export default {
   beforeMount() {
-    firebase.initializeApp({
-      apiKey: "AIzaSyAO2DbQIa-7lKgtYfIrAzKjlNEYP51MrcI",
-      authDomain: "vault-dwellers.firebaseapp.com"
-    })
   }
 }
 </script>

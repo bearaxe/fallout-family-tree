@@ -17,7 +17,9 @@
             <template v-for="dweller in dwellers">
               <option
                 v-show="dweller.id !== newDweller.parent2"
-                :value="dweller.id">
+                :value="dweller.id"
+                :key="dweller.id"
+              >
                 {{ dweller.firstName }} {{ dweller.lastName }}
               </option>
             </template>
@@ -30,7 +32,9 @@
             <template v-for="dweller in dwellers">
               <option
                 v-show="dweller.id !== newDweller.parent1"
-                :value="dweller.id">
+                :value="dweller.id"
+                :key="dweller.id"
+              >
                 {{ dweller.firstName }} {{ dweller.lastName }}
               </option>
             </template>
