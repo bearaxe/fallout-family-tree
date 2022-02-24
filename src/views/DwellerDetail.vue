@@ -25,6 +25,8 @@
         <h3>No Entry for Parent2 Found</h3>
       </div>
 
+      <button @click='deleteDweller' class="delete">Delete Dweller</button>
+
     </div>
     <div v-else>
       <h2>Sorry, there's no entry for that dweller id.</h2>
@@ -46,6 +48,13 @@ export default {
       return this.$store.state.dwellers
         .find(entry => entry.id == id)
         || {};
+    },
+    deleteDweller() {
+      const doDelete = confirm('there is no way to revert this action. are you sure you want to delete this dweller?');
+      if(doDelete) {
+        this.$store.dispatch('deleteDweller', this.dweller);
+        this.$router.push("/home");
+      }
     }
   },
   computed: {

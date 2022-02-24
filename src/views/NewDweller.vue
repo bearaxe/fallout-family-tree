@@ -61,8 +61,6 @@
 <script>
 import { mapState } from 'vuex'
 
-let fakeId = 10;
-
 export default {
   data() {
     return {
@@ -73,7 +71,7 @@ export default {
         firstName: '',
         lastName: '',
         special: '',
-        id: fakeId,
+        id: 0,
       }
     }
   },
@@ -82,9 +80,8 @@ export default {
       this.showParentForm = !this.showParentForm;
     },
     addDweller() {
-      //TODO: integrate firebase via action
-      this.$store.commit('addDweller', this.newDweller);
-      fakeId++;
+      this.newDweller.id = this.$store.getters['newId']
+      this.$store.dispatch('saveDweller', this.newDweller);
       this.$router.push('/home');
     }
   },
