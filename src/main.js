@@ -9,6 +9,9 @@ Vue.config.productionTip = false
 
 firebase.initializeApp(firebaseConfig)
 Vue.prototype.$db = firebase.firestore()
+Vue.prototype.$db.settings({
+  timestampsInSnapshots: true
+})
 
 new Vue({
   router,
