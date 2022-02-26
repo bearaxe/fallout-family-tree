@@ -20,7 +20,7 @@ export default {
 
 <style lang="scss">
 .header {
-  text-decoration: underline;
   color: blue;
+  cursor: pointer;
 }
 </style>

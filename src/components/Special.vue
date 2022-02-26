@@ -80,8 +80,11 @@ export default {
     &.enabled {
       color: blue;
       cursor: pointer;
-      text-decoration: underline;
     }
+  }
+  .label {
+    color: blue;
+    cursor: pointer;
   }
   &:first-child {
     border-top: 1px solid black;
