@@ -4,11 +4,13 @@
       :enable-name-link="false"
       :isHeader="true"
       :dweller="header"
+      @sort-by="relayEmit"
     />
     <template v-for="dweller in dwellers">
       <Special class="dweller-table"
         :enable-name-link="enableNameLink"
         :dweller="dweller"
+        :key="dweller.id"
       />
     </template>
   </div>
@@ -39,6 +41,11 @@ export default {
       }
     }
   },
+  methods: {
+    relayEmit(data) {
+      this.$emit('sort-by', data)
+    }
+  }
 }
 </script>
 

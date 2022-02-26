@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-      <div class="label" v-if="isHeader">
+      <div class="label" v-if="isHeader" @click="$emit('sort-by', { sortBy: 'name' })">
         {{ dweller.label }}
       </div>
       <div v-else
@@ -11,38 +11,29 @@
         {{ dweller.firstName }} {{ dweller.lastName}}
       </div>
 
-      <div class="strength">
-        <span v-text="specialValue('S')"></span>
-      </div>
-      <div class="perception">
-        <span v-text="specialValue('P')"></span>
-      </div>
-      <div class="endurance">
-        <span v-text="specialValue('E')"></span>
-      </div>
-      <div class="charisma">
-        <span v-text="specialValue('C')"></span>
-      </div>
-      <div class="intelligence">
-        <span v-text="specialValue('I')"></span>
-      </div>
-      <div class="agility">
-        <span v-text="specialValue('A')"></span>
-      </div>
-      <div class="luck">
-        <span v-text="specialValue('L')"></span>
-      </div>
+      <SpecialColumn
+        v-for="letter in 'SPECIAL'"
+        :key="letter"
+        :class="letter"
+        :isHeader="isHeader"
+        :specialValue="specialValue(letter)"
+        @sort-by="$emit('sort-by', { sortBy: letter })"
+      />
+
     </div>
 </template>
 
 <script>
-
+import SpecialColumn from './SpecialColumn.vue';
 export default {
   name: 'Special',
   props: {
     dweller: { type: Object },
     enableNameLink: { type: Boolean, default: true },
     isHeader: { type: Boolean, default: false },
+  },
+  components: {
+    SpecialColumn
   },
   methods: {
     openDwellerDetails(dwellerId) {
