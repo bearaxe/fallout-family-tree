@@ -45,9 +45,11 @@ export default {
   },
   methods: {
     findDwellerById(id) {
-      return this.$store.state.dwellers
+      const result = this.$store.state.dwellers
         .find(entry => entry.id == id)
         || {};
+      console.log({result})
+      return result;
     },
     deleteDweller() {
       const doDelete = confirm('there is no way to revert this action. are you sure you want to delete this dweller?');

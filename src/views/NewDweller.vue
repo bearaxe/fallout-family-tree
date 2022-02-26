@@ -50,7 +50,7 @@
         <input name="lastName" v-model="newDweller.lastName" type="text">
 
         <label>SPECIAL</label>
-        <input name="special" v-model="newDweller.special" type="number">
+        <input name="special" v-model="newDweller.special" type="text" pattern="\d*" maxlength="7">
       </div>
 
       <button type="submit">Add This Dweller!</button>
