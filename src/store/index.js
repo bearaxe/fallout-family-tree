@@ -16,6 +16,9 @@ export default new Vuex.Store({
     removeDweller: (state, deleteDweller) => {
       state.dwellers = state.dwellers.filter(dweller => dweller.id != deleteDweller.id)
     },
+    updateDweller: (state, updateData) => {
+      state.dwellers[updateData.id] = updateData;
+    }
   },
   actions: {
     async getDwellers({ commit }) {
@@ -37,6 +40,10 @@ export default new Vuex.Store({
     async deleteDweller({ commit }, deleteDweller) {
       await Vue.prototype.$db.collection('dwellers').doc(deleteDweller.id).delete()
       commit('removeDweller', deleteDweller)
+    },
+    async updateDweller({ commit }, newDwellerData) {
+      await Vue.prototype.$db.collection('dwellers').doc(newDwellerData.id).update({ ...newDwellerData })
+      commit('updateDweller', newDwellerData);
     }
   },
 })

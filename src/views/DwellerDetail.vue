@@ -25,7 +25,25 @@
         <h3>No Entry for Parent2 Found</h3>
       </div>
 
-      <button @click='deleteDweller' class="delete">Delete Dweller</button>
+      <div class="buttons" v-show="!showEditForm">
+        <button @click='deleteDweller' class="delete">Delete Dweller</button>
+        <button @click='showEditForm = true' class="edit">Edit Dweller</button>
+      </div>
+
+      <form @submit.prevent="updateDweller" v-show="showEditForm">
+        <div class="default-form">
+          <label>First Name</label>
+          <input name="firstName" v-model="dweller.firstName" type="text">
+
+          <label>Last Name</label>
+          <input name="lastName" v-model="dweller.lastName" type="text">
+
+          <label>SPECIAL</label>
+          <input name="special" v-model="dweller.special" type="text" pattern="\d*" maxlength="7">
+        </div>
+
+      <button type="submit">Update This Dweller!</button>
+      </form>
 
     </div>
     <div v-else>
@@ -43,6 +61,11 @@ export default {
   components: {
     DwellerTable
   },
+  data() {
+    return {
+      showEditForm: false
+    }
+  },
   methods: {
     findDwellerById(id) {
       const result = this.$store.state.dwellers
@@ -57,6 +80,13 @@ export default {
         this.$store.dispatch('deleteDweller', this.dweller);
         this.$router.push("/home");
       }
+    },
+    editDweller() {
+      this.showEditForm = true;
+    },
+    async updateDweller() {
+      await this.$store.dispatch('updateDweller', this.dweller);
+      this.showEditForm = false;
     }
   },
   computed: {
@@ -72,3 +102,29 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+form {
+  margin: 0 auto;
+  max-width: 400px;
+  text-align: left;
+}
+input {
+  margin: 0;
+}
+input[type='checkbox'] {
+  margin-right: .5rem;
+}
+input[type='number'],
+input[type='text'] {
+  display: block;
+  margin: 0 auto 1rem;
+  width: 100%;
+}
+.buttons {
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+}
+</style>
