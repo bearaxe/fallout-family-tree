@@ -10,7 +10,6 @@
 
       <!-- Vault Born Only -->
       <div class="parent-form" v-show="showParentForm">
-        <!-- TODO: make form-group a wrapper component -->
         <div class="form-group">
           <label>Parent 1:</label>
           <select v-model="newDweller.parent1">
@@ -81,8 +80,20 @@ export default {
     },
     async addDweller() {
       this.newDweller.id = this.$store.getters['newId']
+      this.newDweller.generation = 0;
+
+      if (this.newDweller.parent1 || this.newDweller.parent2) {
+        this.newDweller.generation = 1 + this.getHighestGeneration(
+          this.newDweller.parent1.generation,
+          this.newDweller.parent2.generation
+        );
+      }
+
       await this.$store.dispatch('saveDweller', this.newDweller);
       this.$router.push('/home');
+    },
+    getHighestGeneration(p1Generation = 0, p2Generation = 0) {
+      return p1Generation > p2Generation? p1Generation: p2Generation;
     }
   },
   computed: {

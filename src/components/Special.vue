@@ -12,7 +12,7 @@
       </div>
 
       <SpecialColumn
-        v-for="letter in 'SPECIAL'"
+        v-for="letter in 'SPECIALG'"
         :key="letter"
         :class="letter"
         :isHeader="isHeader"
@@ -46,7 +46,12 @@ export default {
       if (this.isHeader) {
         return letter;
       }
-      else if (this.dweller) {
+
+      if (this.dweller) {
+        if (letter == 'G') {
+          console.log('testing G', this.dweller.generation, this.dweller)
+          return typeof this.dweller.generation != 'undefined'? this.dweller.generation: '--';
+        }
         const stat = this.dweller.special[statIndex];
         return stat? stat : '-'; // missing stat
       }

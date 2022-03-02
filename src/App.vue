@@ -10,9 +10,6 @@
 </template>
 
 <script>
-///TODO: keep going off this link
-///https://stackoverflow.com/questions/44352042/vuejs-vuex-firebase-where-to-hook-up-firebase
-
 export default {
   beforeMount() {
     this.$store.dispatch('getDwellers');
