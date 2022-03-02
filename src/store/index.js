@@ -9,6 +9,7 @@ export default new Vuex.Store({
   },
   getters: {
     newId: (state) => state.dwellers.length + 1,
+    findById: (state) => (id) => { return state.dwellers.find(entry => entry.id == id) || {}; },
   },
   mutations: {
     setDwellers: (state, newDwellerList)=> { state.dwellers = newDwellerList },
@@ -27,11 +28,28 @@ export default new Vuex.Store({
         commit('addDweller', { ...doc.data(), id: doc.id })
       })
     },
-    async saveDweller({ commit }, newDweller) {
+    async saveDweller({ commit, dispatch, getters }, newDweller) {
       try {
-        const docRef = await Vue.prototype.$db.collection('dwellers').add(newDweller);
+        const docRef = await Vue.prototype.$db.collection('dwellers').add({...newDweller});
         console.log("Document written with ID: ", docRef.id);
-        commit('addDweller', {newDweller})
+        commit('addDweller', { ...newDweller, id: docRef.id })
+
+        if(newDweller.parent1) {
+          const parent1 = getters.findById(newDweller.parent1);
+          dispatch('addChildToParent', {
+            parentDweller: parent1,
+            childDocRef: docRef.id
+          })
+        }
+        if(newDweller.parent2) {
+          const parent2 = getters.findById(newDweller.parent2);
+          dispatch('addChildToParent', {
+            parentDweller: parent2,
+            childDocRef: docRef.id
+          })
+        }
+
+        return docRef;
       }
       catch(error) {
         console.error("Error adding document: ", error);
@@ -40,6 +58,16 @@ export default new Vuex.Store({
     async deleteDweller({ commit }, deleteDweller) {
       await Vue.prototype.$db.collection('dwellers').doc(deleteDweller.id).delete()
       commit('removeDweller', deleteDweller)
+    },
+    async addChildToParent({ dispatch }, { parentDweller, childDocRef }) {
+      const parentChildren = parentDweller.children || [];
+      await dispatch('updateDweller', {
+        ...parentDweller,
+        children: [
+          ...parentChildren,
+          childDocRef
+        ]
+      })
     },
     async updateDweller({ commit }, newDwellerData) {
       await Vue.prototype.$db.collection('dwellers').doc(newDwellerData.id).update({ ...newDwellerData })

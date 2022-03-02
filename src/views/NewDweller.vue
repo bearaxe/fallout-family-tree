@@ -79,9 +79,9 @@ export default {
     toggleParentForm() {
       this.showParentForm = !this.showParentForm;
     },
-    addDweller() {
+    async addDweller() {
       this.newDweller.id = this.$store.getters['newId']
-      this.$store.dispatch('saveDweller', this.newDweller);
+      await this.$store.dispatch('saveDweller', this.newDweller);
       this.$router.push('/home');
     }
   },
