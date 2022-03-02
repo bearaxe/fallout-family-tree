@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 import DwellerTable from '@/components/DwellerTable.vue'
 
 export default {
@@ -77,7 +77,7 @@ export default {
 
 <style lang="scss">
 .search-bar {
-  width: 90%;
+  max-width: 90%;
   margin: 0 auto 2rem;
 }
 </style>
