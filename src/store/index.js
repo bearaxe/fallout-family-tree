@@ -19,6 +19,9 @@ export default new Vuex.Store({
     },
     updateDweller: (state, updateData) => {
       state.dwellers[updateData.id] = updateData;
+      if(updateData.children) {
+        Vue.set(state.dwellers[updateData.id], 'children', updateData.children);
+      }
     }
   },
   actions: {
@@ -41,6 +44,7 @@ export default new Vuex.Store({
             childDocRef: docRef.id
           })
         }
+
         if(newDweller.parent2) {
           const parent2 = getters.findById(newDweller.parent2);
           dispatch('addChildToParent', {
@@ -55,9 +59,25 @@ export default new Vuex.Store({
         console.error("Error adding document: ", error);
       }
     },
-    async deleteDweller({ commit }, deleteDweller) {
+    async deleteDweller({ commit, dispatch, getters }, deleteDweller) {
       await Vue.prototype.$db.collection('dwellers').doc(deleteDweller.id).delete()
       commit('removeDweller', deleteDweller)
+
+      if(deleteDweller.parent1) {
+        const parent1 = getters.findById(deleteDweller.parent1);
+        await dispatch('removeChildFromParent', {
+          parentDweller: parent1,
+          childDocRef: deleteDweller.id
+        })
+      }
+
+      if(deleteDweller.parent2) {
+        const parent2 = getters.findById(deleteDweller.parent2);
+        await dispatch('removeChildFromParent', {
+          parentDweller: parent2,
+          childDocRef: deleteDweller.id
+        })
+      }
     },
     async addChildToParent({ dispatch }, { parentDweller, childDocRef }) {
       const parentChildren = parentDweller.children || [];
@@ -67,6 +87,13 @@ export default new Vuex.Store({
           ...parentChildren,
           childDocRef
         ]
+      })
+    },
+    async removeChildFromParent({ dispatch }, { parentDweller, childDocRef }) {
+      const parentChildren = parentDweller.children.filter(childId => childId != childDocRef);
+      await dispatch('updateDweller', {
+        ...parentDweller,
+        children: parentChildren,
       })
     },
     async updateDweller({ commit }, newDwellerData) {

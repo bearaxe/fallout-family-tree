@@ -47,7 +47,7 @@ export default {
         return letter;
       }
 
-      if (this.dweller) {
+      if (Object.keys(this.dweller).length) {
         if (letter == 'G') {
           console.log('testing G', this.dweller.generation, this.dweller)
           return typeof this.dweller.generation != 'undefined'? this.dweller.generation: '--';

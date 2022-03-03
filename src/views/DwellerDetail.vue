@@ -32,7 +32,7 @@
       </div>
 
       <div class="section buttons" v-show="!showEditForm">
-        <button @click='deleteDweller' class="delete">Delete Dweller</button>
+        <button :disabled="disableDelete" @click='deleteDweller' class="delete">Delete Dweller</button>
         <button @click='showEditForm = true' class="edit">Edit Dweller</button>
       </div>
 
@@ -69,7 +69,8 @@ export default {
   },
   data() {
     return {
-      showEditForm: false
+      showEditForm: false,
+      disableDelete: false,
     }
   },
   methods: {
@@ -80,10 +81,11 @@ export default {
 
       return result;
     },
-    deleteDweller() {
+    async deleteDweller() {
       const doDelete = confirm('there is no way to revert this action. are you sure you want to delete this dweller? (it may leave references that may break the app, especially if children are involved)');
       if(doDelete) {
-        this.$store.dispatch('deleteDweller', this.dweller);
+        this.disableDelete = true;
+        await this.$store.dispatch('deleteDweller', this.dweller);
         this.$router.push("/home");
       }
     },
