@@ -1,5 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { initializeApp } from 'firebase/app'
+import { collection, getDocs, getFirestore } from 'firebase/firestore/lite'
+import firebaseConfig from '@/../secrets/firebase.auth'
+
+const app = initializeApp(firebaseConfig)
+const db = getFirestore(app)
 
 Vue.use(Vuex)
 
@@ -26,10 +32,15 @@ export default new Vuex.Store({
   },
   actions: {
     async getDwellers({ commit }) {
-      const qeurySnap = await Vue.prototype.$db.collection('dwellers').get()
-      qeurySnap.forEach((doc) => {
+      const dwellerCollection = collection(db, 'dwellers')
+      const querySnaphot = await getDocs(dwellerCollection)
+      console.log({querySnaphot})
+      // TODO: can probably just set the entire list (careful of that children array)
+      const dwellerList = querySnaphot.docs.map((doc) => {
         commit('addDweller', { ...doc.data(), id: doc.id })
+        return { ...doc.data(), id: doc.id }
       })
+      console.log({dwellerList})
     },
     async saveDweller({ commit, dispatch, getters }, newDweller) {
       try {
