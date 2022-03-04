@@ -23,4 +23,11 @@ export default {
   color: blue;
   cursor: pointer;
 }
+.column {
+  flex-basis: 7%;
+
+  &.Generation {
+    flex-basis: 7rem;
+  }
+}
 </style>

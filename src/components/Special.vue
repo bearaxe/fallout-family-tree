@@ -12,12 +12,12 @@
       </div>
 
       <SpecialColumn
-        v-for="letter in 'SPECIALG'"
-        :key="letter"
-        :class="letter"
+        v-for="(value, key) in columns"
+        :key="key"
+        :class="value"
         :isHeader="isHeader"
-        :specialValue="specialValue(letter)"
-        @sort-by="$emit('sort-by', { sortBy: letter })"
+        :specialValue="specialValue(value)"
+        @sort-by="$emit('sort-by', { sortBy: value })"
       />
 
     </div>
@@ -35,6 +35,14 @@ export default {
   components: {
     SpecialColumn
   },
+  data() {
+    return {
+      columns: {
+        ...'SPECIAL',
+        Gen: 'Generation',
+      }
+    }
+  },
   methods: {
     openDwellerDetails(dwellerId) {
       if (dwellerId) {
@@ -47,11 +55,16 @@ export default {
         return letter;
       }
 
-      if (Object.keys(this.dweller).length) {
-        if (letter == 'G') {
-          console.log('testing G', this.dweller.generation, this.dweller)
-          return typeof this.dweller.generation != 'undefined'? this.dweller.generation: '--';
+      if(statIndex == -1) {
+        switch(letter) {
+          case 'Generation':
+            return typeof this.dweller.generation != 'undefined'? this.dweller.generation: '--';
+          default:
+            console.log('unimplemented column:', letter);
         }
+      }
+
+      if (Object.keys(this.dweller).length) {
         const stat = this.dweller.special[statIndex];
         return stat? stat : '-'; // missing stat
       }
@@ -72,7 +85,6 @@ export default {
 
   > div {
     border-left: 1px solid black;
-    flex-basis: 7%;
     text-align: center;
     padding: .25rem;
     padding-bottom: 0;

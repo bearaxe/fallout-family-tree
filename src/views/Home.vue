@@ -8,6 +8,7 @@
 <script>
 import { mapState } from 'vuex'
 import DwellerTable from '@/components/DwellerTable.vue'
+import { nameSort, specialSort, generationSort } from '@/searchFunctions';
 
 export default {
   name: 'home',
@@ -31,30 +32,19 @@ export default {
     search() {
       const newDisplayList = this.dwellers.filter(dweller => {
         const dn = (dweller.firstName + dweller.lastName).toLowerCase()
-        return dn.includes(this.query.toLowerCase());
+        return dn.includes(this.query.toLowerCase())
       })
       console.log('searching with query', this.query, newDisplayList)
       this.displayList = newDisplayList
     },
     sort({ sortBy }) {
-      const specialSort = (firstEl, secondEl) => {
-        const statIndex = 'SPECIAL'.indexOf(sortBy)
-        if(firstEl.special[statIndex] < secondEl.special[statIndex]) return 1 * this.toggleSort
-        if(firstEl.special[statIndex] > secondEl.special[statIndex]) return -1 * this.toggleSort
-        return 0;
-      }
-
-      const nameSort = (firstEl, secondEl) => {
-        const searchParam = this.toggleSort == 1? 'firstName': 'lastName'
-        if(firstEl[searchParam] < secondEl[searchParam]) return -1
-        if(firstEl[searchParam] > secondEl[searchParam]) return 1
-        return 0;
-      }
-
+      let toggleEnabled = true
       switch(sortBy) {
+        case 'Generation':
+          this.displayList = this.displayList.sort((el1, el2) => generationSort(el1, el2, this.toggleSort))
+          break;
         case 'name':
-          this.displayList = this.displayList.sort(nameSort)
-          this.toggleSort = this.toggleSort == 1? -1: 1;
+          this.displayList = this.displayList.sort((el1, el2) => nameSort(el1, el2, this.toggleSort))
           break;
         case 'S':
         case 'P':
@@ -63,11 +53,14 @@ export default {
         case 'I':
         case 'A':
         case 'L':
-          this.displayList = this.displayList.sort(specialSort)
-          this.toggleSort = this.toggleSort == 1? -1: 1;
+          this.displayList = this.displayList.sort((el1, el2) => specialSort(el1, el2, this.toggleSort, sortBy))
           break;
         default:
+          toggleEnabled = false
           console.log(`unknown sort type: ${sortBy}`)
+      }
+      if (toggleEnabled) {
+        this.toggleSort *= -1;
       }
     }
   }
