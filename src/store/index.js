@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { initializeApp } from 'firebase/app'
-import { collection, getDocs, getFirestore } from 'firebase/firestore/lite'
+import { collection, getDocs, getFirestore, doc, updateDoc, setDoc } from 'firebase/firestore/lite'
 import firebaseConfig from '@/../secrets/firebase.auth'
 
 const app = initializeApp(firebaseConfig)
@@ -24,7 +24,8 @@ export default new Vuex.Store({
       state.dwellers = state.dwellers.filter(dweller => dweller.id != deleteDweller.id)
     },
     updateDweller: (state, updateData) => {
-      state.dwellers[updateData.id] = updateData;
+      const indexOfDweller = state.dwellers.findIndex(dweller => dweller.id == updateData.id);
+      state.dwellers[indexOfDweller] = updateData;
       if(updateData.children) {
         Vue.set(state.dwellers[updateData.id], 'children', updateData.children);
       }
@@ -34,25 +35,24 @@ export default new Vuex.Store({
     async getDwellers({ commit }) {
       const dwellerCollection = collection(db, 'dwellers')
       const querySnaphot = await getDocs(dwellerCollection)
-      console.log({querySnaphot})
       // TODO: can probably just set the entire list (careful of that children array)
       const dwellerList = querySnaphot.docs.map((doc) => {
         commit('addDweller', { ...doc.data(), id: doc.id })
         return { ...doc.data(), id: doc.id }
       })
-      console.log({dwellerList})
     },
     async saveDweller({ commit, dispatch, getters }, newDweller) {
       try {
-        const docRef = await Vue.prototype.$db.collection('dwellers').add({...newDweller});
-        console.log("Document written with ID: ", docRef.id);
-        commit('addDweller', { ...newDweller, id: docRef.id })
+        const dwellerRef = doc(collection(db, 'dwellers'));
+        await setDoc(dwellerRef, {...newDweller, id: dwellerRef.id})
+        console.log("Document written with ID: ", dwellerRef.id);
+        commit('addDweller', {...newDweller, id: dwellerRef.id})
 
         if(newDweller.parent1) {
           const parent1 = getters.findById(newDweller.parent1);
           dispatch('addChildToParent', {
             parentDweller: parent1,
-            childDocRef: docRef.id
+            childDocRef: dwellerRef.id
           })
         }
 
@@ -60,11 +60,11 @@ export default new Vuex.Store({
           const parent2 = getters.findById(newDweller.parent2);
           dispatch('addChildToParent', {
             parentDweller: parent2,
-            childDocRef: docRef.id
+            childDocRef: dwellerRef.id
           })
         }
 
-        return docRef;
+        return dwellerRef.id;
       }
       catch(error) {
         console.error("Error adding document: ", error);
@@ -108,7 +108,8 @@ export default new Vuex.Store({
       })
     },
     async updateDweller({ commit }, newDwellerData) {
-      await Vue.prototype.$db.collection('dwellers').doc(newDwellerData.id).update({ ...newDwellerData })
+      const docToUpdate = doc(db, 'dwellers', newDwellerData.id);
+      await updateDoc(docToUpdate, newDwellerData);
       commit('updateDweller', newDwellerData);
     }
   },
