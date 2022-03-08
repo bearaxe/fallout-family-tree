@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import NewDweller from './views/NewDweller.vue'
 import DwellerDetails from './views/DwellerDetail.vue'
+import LineGraphChart from './views/LineGraphChart.vue'
 
 Vue.use(Router)
 
@@ -23,6 +24,11 @@ export default new Router({
       path: '/dweller-details/:dwellerId',
       name: 'dweller-details',
       component: DwellerDetails
+    },
+    {
+      path: '/charts',
+      name: 'charts',
+      component: LineGraphChart
     }
   ]
 })

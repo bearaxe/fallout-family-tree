@@ -3,7 +3,8 @@
     <img src="./assets/logo.png">
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/new-dweller">New Dweller</router-link>
+      <router-link to="/new-dweller">New Dweller</router-link> |
+      <router-link to="/charts">Charts</router-link>
     </div>
     <router-view/>
   </div>
