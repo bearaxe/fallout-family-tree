@@ -1,7 +1,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { initializeApp } from 'firebase/app'
-import { collection, getDocs, getFirestore, doc, updateDoc, setDoc } from 'firebase/firestore/lite'
+import {
+  getFirestore,
+  collection,
+  doc,
+  getDocs,
+  updateDoc,
+  setDoc,
+  deleteDoc,
+} from 'firebase/firestore/lite'
 import firebaseConfig from '@/../secrets/firebase.auth'
 
 const app = initializeApp(firebaseConfig)
@@ -26,9 +34,6 @@ export default new Vuex.Store({
     updateDweller: (state, updateData) => {
       const indexOfDweller = state.dwellers.findIndex(dweller => dweller.id == updateData.id);
       state.dwellers[indexOfDweller] = updateData;
-      if(updateData.children) {
-        Vue.set(state.dwellers[updateData.id], 'children', updateData.children);
-      }
     }
   },
   actions: {
@@ -71,7 +76,8 @@ export default new Vuex.Store({
       }
     },
     async deleteDweller({ commit, dispatch, getters }, deleteDweller) {
-      await Vue.prototype.$db.collection('dwellers').doc(deleteDweller.id).delete()
+      const dwellerRef = doc(db, "dwellers", deleteDweller.id)
+      await deleteDoc(dwellerRef);
       commit('removeDweller', deleteDweller)
 
       if(deleteDweller.parent1) {
